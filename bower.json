@@ -7,7 +7,7 @@
   "description": "",
   "main": [
     "./app/SearchPrototypeApp.min.js"
-    "./app/SearchPrototypeApp.min.css"
+    "./app/assets/css/SearchPrototypeApp.min.css"
   ],
   "license": "MIT",
   "private": true,

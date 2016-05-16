@@ -20,12 +20,12 @@ gulp.task('build-css', function() {
     }))
     .pipe(plugins.sass({
       outputStyle: 'compressed'
-    }).on('error', sass.logError))
+    }).on('error', plugins.sass.logError))
     .pipe(plugins.sourcemaps.write('./maps', {
       addComment: false,
       includeContent: false
     }))
-    .pipe(gulp.dest('./assets/css'));
+    .pipe(gulp.dest('./app/assets/css'));
 });
 
 /**
@@ -49,8 +49,33 @@ gulp.task('build-js', function() {
       addComment: false,
       includeContent: false
     }))
-    .pipe(gulp.dest('./assets/js/'));
+    .pipe(gulp.dest('./app'));
 });
+
+/**
+ * Build the vendor JavaScript.
+ */
+gulp.task('build-vendor-js', function() {
+  return gulp.src([
+      './bower_components/angular/angular.min.js'
+    ])
+    .pipe(plugins.concat('vendor.min.js'))
+    .pipe(gulp.dest('./app'));
+});
+
+/**
+ * Build the vendor CSS.
+ */
+gulp.task('build-vendor-css', function() {
+  return gulp.src([])
+    .pipe(plugins.concat('vendor.min.css'))
+    .pipe(gulp.dest('./app/assets/css'));
+});
+
+/**
+ * Build the vendor files.
+ */
+gulp.task('build-vendor', ['build-vendor-js', 'build-vendor-css']);
 
 /**
  * Watch the files for changes, run code checks and compile SCSS.
@@ -65,6 +90,7 @@ gulp.task('watch', function() {
  */
 gulp.task('webserver', function() {
   plugins.connect.server({
+    root: 'app',
     port: 5678
   });
 });
@@ -72,4 +98,4 @@ gulp.task('webserver', function() {
 /**
  * Add the default task.
  */
-gulp.task('default', ['watch', 'webserver']);
+gulp.task('default', ['build-vendor', 'watch', 'webserver']);
