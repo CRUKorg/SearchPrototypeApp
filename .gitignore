@@ -1,0 +1,10 @@
+.bundle/config
+bin/
+vendor/
+.sass-cache/
+vendor/
+.ruby-version
+node_modules/
+.DS_Store
+.idea
+bower_components
