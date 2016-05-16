@@ -1,0 +1,25 @@
+{
+  "name": "SearchPrototypeApp",
+  "homepage": "https://github.com/heylookalive/SearchPrototypeApp",
+  "authors": [
+    "heylookalive <allister.price@gmail.com>"
+  ],
+  "description": "",
+  "main": [
+    "./app/SearchPrototypeApp.min.js"
+    "./app/SearchPrototypeApp.min.css"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.5",
+    "cruk-pattern-library": "^0.0.3"
+  }
+}
