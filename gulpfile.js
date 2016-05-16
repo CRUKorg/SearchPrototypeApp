@@ -11,7 +11,7 @@ var project_name = pkg.name;
  * Task to rebuild CSS files.
  */
 gulp.task('build-css', function() {
-  return gulp.src('./app/assets/scss/**/*.scss')
+  return gulp.src('./src/app/assets/scss/**/*.scss')
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.concat(project_name + '.min.css'))
     .pipe(plugins.autoprefixer({
@@ -25,14 +25,14 @@ gulp.task('build-css', function() {
       addComment: false,
       includeContent: false
     }))
-    .pipe(gulp.dest('./app/assets/css'));
+    .pipe(gulp.dest('./src/app/assets/css'));
 });
 
 /**
  * Setup jshint, look at JS files which aren't minified.
  */
 gulp.task('jshint', function() {
-  return gulp.src(['./app/*.js', './app/**/*.js', '!./app/*.min.js', '!./app/**/*.min.js'])
+  return gulp.src(['./src/app/*.js', './src/app/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });
@@ -41,10 +41,10 @@ gulp.task('jshint', function() {
  * Build the JS files into one, minified named file with sourcemaps.
  */
 gulp.task('build-js', function() {
-  return gulp.src(['./app/*.js', './app/**/*.js', '!./app/*.min.js', '!./app/**/*.min.js'])
+  return gulp.src(['./src/app/*.js', './src/app/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
     .pipe(plugins.concat(project_name + '.min.js'))
     .pipe(plugins.uglify())
-    .pipe(gulp.dest('./app'));
+    .pipe(gulp.dest('./src/app'));
 });
 
 /**
@@ -55,7 +55,7 @@ gulp.task('build-vendor-js', function() {
       './bower_components/angular/angular.min.js'
     ])
     .pipe(plugins.concat('vendor.min.js'))
-    .pipe(gulp.dest('./app'));
+    .pipe(gulp.dest('./src/app'));
 });
 
 /**
@@ -64,7 +64,7 @@ gulp.task('build-vendor-js', function() {
 gulp.task('build-vendor-css', function() {
   return gulp.src([])
     .pipe(plugins.concat('vendor.min.css'))
-    .pipe(gulp.dest('./app/assets/css'));
+    .pipe(gulp.dest('./src/app/assets/css'));
 });
 
 /**
@@ -76,8 +76,8 @@ gulp.task('build-vendor', ['build-vendor-js', 'build-vendor-css']);
  * Watch the files for changes, run code checks and compile SCSS.
  */
 gulp.task('watch', function() {
-  gulp.watch(['./app/assets/scss/*.scss', './app/assets/scss/**/*.scss'], ['build-css']);
-  gulp.watch(['./app/*.js', './app/**/*.js'], ['jshint', 'build-js']);
+  gulp.watch(['./src/app/assets/scss/*.scss', './src/app/assets/scss/**/*.scss'], ['build-css']);
+  gulp.watch(['./src/app/*.js', './src/app/**/*.js'], ['jshint', 'build-js']);
 });
 
 /**
