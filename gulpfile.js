@@ -42,13 +42,8 @@ gulp.task('jshint', function() {
  */
 gulp.task('build-js', function() {
   return gulp.src(['./app/*.js', './app/**/*.js', '!./app/*.min.js', '!./app/**/*.min.js'])
-    .pipe(plugins.sourcemaps.init())
     .pipe(plugins.concat(project_name + '.min.js'))
     .pipe(plugins.uglify())
-    .pipe(plugins.sourcemaps.write('./maps', {
-      addComment: false,
-      includeContent: false
-    }))
     .pipe(gulp.dest('./app'));
 });
 
