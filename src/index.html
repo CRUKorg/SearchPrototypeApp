@@ -16,9 +16,12 @@
         <div class="col-xs-12">
 
           <form role="search" ng-submit="">
-            <div class="form-group">
-              <label class="sr-only" for="search-input">Search!</label>
-              <input type="text" class="form-control input-lg" id="search-input" placeholder="Search!" autocomplete="off" autocorrect="off">
+            <div class="cr-input-group cr-input-group--lg cr-search-input" data-search-field="combined-ip" data-force_touch_device="true">
+              <label for="search-input" id="search-label">Search...</label>
+              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off">
+              <span class="cr-input-group__button cr-search-input__button">
+                <button type="submit" class="btn" aria-label="Submit your search"><span class="cr-input-group__icon glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </span>
             </div>
           </form>
 

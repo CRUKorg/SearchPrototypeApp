@@ -11,7 +11,7 @@ var project_name = pkg.name;
  * Task to rebuild CSS files.
  */
 gulp.task('build-css', function() {
-  return gulp.src('./src/app/assets/scss/**/*.scss')
+  return gulp.src('./src/assets/scss/**/*.scss')
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.concat(project_name + '.min.css'))
     .pipe(plugins.autoprefixer({
@@ -25,7 +25,7 @@ gulp.task('build-css', function() {
       addComment: false,
       includeContent: false
     }))
-    .pipe(gulp.dest('./src/app/assets/css'));
+    .pipe(gulp.dest('./src/assets/css'));
 });
 
 /**
@@ -44,7 +44,7 @@ gulp.task('build-js', function() {
   return gulp.src(['./src/app/*.js', './src/app/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
     .pipe(plugins.concat(project_name + '.min.js'))
     .pipe(plugins.uglify())
-    .pipe(gulp.dest('./src/app'));
+    .pipe(gulp.dest('./src'));
 });
 
 /**
@@ -52,10 +52,12 @@ gulp.task('build-js', function() {
  */
 gulp.task('build-vendor-js', function() {
   return gulp.src([
-      './bower_components/angular/angular.min.js'
+      './bower_components/angular/angular.min.js',
+      './bower_components/jquery/dist/jquery.min.js',
+      './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js'
     ])
     .pipe(plugins.concat('vendor.min.js'))
-    .pipe(gulp.dest('./src/app'));
+    .pipe(gulp.dest('./src'));
 });
 
 /**
@@ -64,7 +66,7 @@ gulp.task('build-vendor-js', function() {
 gulp.task('build-vendor-css', function() {
   return gulp.src([])
     .pipe(plugins.concat('vendor.min.css'))
-    .pipe(gulp.dest('./src/app/assets/css'));
+    .pipe(gulp.dest('./src/assets/css'));
 });
 
 /**
@@ -76,7 +78,7 @@ gulp.task('build-vendor', ['build-vendor-js', 'build-vendor-css']);
  * Watch the files for changes, run code checks and compile SCSS.
  */
 gulp.task('watch', function() {
-  gulp.watch(['./src/app/assets/scss/*.scss', './src/app/assets/scss/**/*.scss'], ['build-css']);
+  gulp.watch(['./src/assets/scss/*.scss', './src/assets/scss/**/*.scss'], ['build-css']);
   gulp.watch(['./src/app/*.js', './src/app/**/*.js'], ['jshint', 'build-js']);
 });
 
@@ -85,7 +87,7 @@ gulp.task('watch', function() {
  */
 gulp.task('webserver', function() {
   plugins.connect.server({
-    root: 'app',
+    root: 'src',
     port: 5678
   });
 });
