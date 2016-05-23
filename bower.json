@@ -6,7 +6,7 @@
   ],
   "description": "",
   "main": [
-    "./app/SearchPrototypeApp.min.js"
+    "./app/SearchPrototypeApp.min.js",
     "./app/assets/css/SearchPrototypeApp.min.css"
   ],
   "license": "MIT",
@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "angular": "^1.5.5",
-    "cruk-pattern-library": "^0.0.3"
+    "cruk-pattern-library": "^0.0.3",
+    "angular-mocks": "^1.5.5"
   }
 }
