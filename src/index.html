@@ -10,8 +10,8 @@
     <link href="assets/css/SearchPrototypeApp.min.css" rel="stylesheet">
     <link href="assets/css/vendor.min.css" rel="stylesheet">
   </head>
-  <body>
-    <div class="container" ng-app="SearchPrototypeApp">
+  <body ng-app="searchPrototypeApp">
+    <div class="container" ng-controller="SearchCtrl as ctrl">
       <div class="row">
         <div class="col-xs-12">
 
@@ -24,6 +24,14 @@
               </span>
             </div>
           </form>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+
+          <p ng-bind="ctrl.message"></p>
 
         </div>
       </div>
