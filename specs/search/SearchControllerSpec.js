@@ -4,7 +4,7 @@ describe('Controller: SearchController', function() {
   var ctrl;
 
   beforeEach(inject(function($controller) {
-    ctrl = $controller('SearchCtrl');
+    ctrl = $controller('SearchController');
   }));
 
   it('should have the message quack', function() {

@@ -11,14 +11,14 @@
     <link href="assets/css/vendor.min.css" rel="stylesheet">
   </head>
   <body ng-app="searchPrototypeApp">
-    <div class="container" ng-controller="SearchCtrl as ctrl">
+    <div class="container" ng-controller="SearchController as ctrl">
       <div class="row">
         <div class="col-xs-12">
 
-          <form role="search" ng-submit="">
+          <form role="search" name="searchForm" ng-submit="ctrl.executeSearch(ctrl.search_input)">
             <div class="cr-input-group cr-input-group--lg cr-search-input" data-search-field="combined-ip" data-force_touch_device="true">
               <label for="search-input" id="search-label">Search...</label>
-              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off">
+              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.search_input" required>
               <span class="cr-input-group__button cr-search-input__button">
                 <button type="submit" class="btn" aria-label="Submit your search"><span class="cr-input-group__icon glyphicon glyphicon-search" aria-hidden="true"></span></button>
               </span>
@@ -31,7 +31,15 @@
       <div class="row">
         <div class="col-xs-12">
 
-          <p ng-bind="ctrl.message"></p>
+          <h1>Results</h1>
+
+          <ul>
+            <li ng-repeat="doc in indexVM.results.hits.hits">
+              {{doc._source | json | limitTo: 500}}
+            </li>
+          </ul>
+
+          <eui-simple-paging></eui-simple-paging>
 
         </div>
       </div>

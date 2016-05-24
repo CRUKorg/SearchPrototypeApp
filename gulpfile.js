@@ -53,6 +53,9 @@ gulp.task('build-js', function() {
 gulp.task('build-vendor-js', function() {
   return gulp.src([
       './bower_components/angular/angular.min.js',
+      './bower_components/angular-ui-router/release/angular-ui-router.min.js',
+      './bower_components/angulartics/dist/angulartics.min.js',
+      './bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
       './bower_components/jquery/dist/jquery.min.js',
       './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js'
     ])
