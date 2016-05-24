@@ -57,7 +57,10 @@ gulp.task('build-vendor-js', function() {
       './bower_components/angulartics/dist/angulartics.min.js',
       './bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
       './bower_components/jquery/dist/jquery.min.js',
-      './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js'
+      './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js',
+      './bower_components/elastic.js/dist/elastic.min.js',
+      './bower_components/elasticsearch/elasticsearch.angular.js',
+      './bower_components/elasticui/dist/elasticui.min.js'
     ])
     .pipe(plugins.concat('vendor.min.js'))
     .pipe(gulp.dest('./src'));
