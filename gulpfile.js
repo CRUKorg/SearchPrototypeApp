@@ -32,7 +32,7 @@ gulp.task('build-css', function() {
  * Setup jshint, look at JS files which aren't minified.
  */
 gulp.task('jshint', function() {
-  return gulp.src(['./src/app/*.js', './src/app/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
+  return gulp.src(['./src/app/*.js', './src/app/**/*.js', './src/app/**/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });
@@ -41,7 +41,7 @@ gulp.task('jshint', function() {
  * Build the JS files into one, minified named file with sourcemaps.
  */
 gulp.task('build-js', function() {
-  return gulp.src(['./src/app/*.js', './src/app/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
+  return gulp.src(['./src/app/*.js', './src/app/**/*.js', './src/app/**/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
     .pipe(plugins.concat(project_name + '.min.js'))
     .pipe(plugins.uglify({mangle: false}))
     .pipe(gulp.dest('./src'));

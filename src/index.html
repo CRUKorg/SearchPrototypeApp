@@ -37,8 +37,8 @@
 
           <ul class="list-unstyled" ng-show="ctrl.results">
             <li ng-repeat="doc in ctrl.results">
-              <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0]}}</a></h3>
-              <p ng-bind-html="(doc.highlight['body:value']).join('... ') | limitTo: 500"></p>
+              <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h3>
+              <p ng-bind-html="doc.highlight['body:value'].join('... ') | htmlsafe | plaintext | limitTo: 500"></p>
             </li>
           </ul>
 
