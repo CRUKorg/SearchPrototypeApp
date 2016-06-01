@@ -43,7 +43,7 @@ gulp.task('jshint', function() {
 gulp.task('build-js', function() {
   return gulp.src(['./src/app/*.js', './src/app/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
     .pipe(plugins.concat(project_name + '.min.js'))
-    .pipe(plugins.uglify())
+    .pipe(plugins.uglify({mangle: false}))
     .pipe(gulp.dest('./src'));
 });
 
@@ -60,7 +60,8 @@ gulp.task('build-vendor-js', function() {
       './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js',
       './bower_components/elastic.js/dist/elastic.min.js',
       './bower_components/elasticsearch/elasticsearch.angular.js',
-      './bower_components/elasticui/dist/elasticui.min.js'
+      //'./bower_components/elasticui/dist/elasticui.min.js',
+      './bower_components/angular-sanitize/angular-sanitize.min.js'
     ])
     .pipe(plugins.concat('vendor.min.js'))
     .pipe(gulp.dest('./src'));

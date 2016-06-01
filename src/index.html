@@ -10,15 +10,15 @@
     <link href="assets/css/SearchPrototypeApp.min.css" rel="stylesheet">
     <link href="assets/css/vendor.min.css" rel="stylesheet">
   </head>
-  <body ng-app="searchPrototypeApp" eui-index="'elasticsearch_index_elasticproto_news'">
-    <div class="container">
+  <body ng-app="searchPrototypeApp">
+    <div class="container" ng-controller="SearchController as ctrl">
       <div class="row">
         <div class="col-xs-12">
 
-          <form role="search" name="searchForm">
-            <div class="cr-input-group cr-input-group--lg cr-search-input" data-search-field="combined-ip" data-force_touch_device="true">
+          <form role="search" name="searchForm" ng-submit="ctrl.executeSearch(ctrl.search_input)">
+            <div class="cr-input-group cr-input-group--lg cr-search-input">
               <label for="search-input" id="search-label">Search...</label>
-              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="search_input" eui-query="ejs.MatchQuery(title, search_input)" required>
+              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.search_input" ng-change="ctrl.executeSearch(ctrl.search_input)" required>
               <span class="cr-input-group__button cr-search-input__button">
                 <button type="submit" class="btn" aria-label="Submit your search"><span class="cr-input-group__icon glyphicon glyphicon-search" aria-hidden="true"></span></button>
               </span>
@@ -31,20 +31,29 @@
       <div class="row">
         <div class="col-xs-12">
 
-          <p ng-hide="indexVM.results.hits.hits">No results were found :C</p>
+          <div class="alert alert-danger" role="alert" ng-show="ctrl.error"></div>
 
-          <ul class="list-unstyled" ng-show="indexVM.results.hits.hits">
-            <li ng-repeat="doc in indexVM.results.hits.hits">
-              {{doc._source | json | limitTo: 500}}
+          <p ng-hide="ctrl.results">No results were found :C</p>
+
+          <ul class="list-unstyled" ng-show="ctrl.results">
+            <li ng-repeat="doc in ctrl.results">
+              <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0]}}</a></h3>
+              <p ng-bind-html="(doc.highlight['body:value']).join('... ') | limitTo: 500"></p>
             </li>
           </ul>
-
-          <eui-simple-paging ng-show="indexVM.results.hits.hits"></eui-simple-paging>
 
         </div>
       </div>
     </div>
 
+    <script>
+      var crukSearch = crukSearch || {
+        config: {
+          host: 'http://searchproto1.cancerresearchuk.org/elasticsearch',
+          resultsPerPage: 10
+        }
+      };
+    </script>
     <script src="vendor.min.js"></script>
     <script src="SearchPrototypeApp.min.js"></script>
   </body>
