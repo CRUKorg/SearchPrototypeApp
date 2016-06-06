@@ -3,6 +3,7 @@
 
   global.app = angular.module('searchPrototypeApp', [
     'ui.router',
+    'ngSanitize',
     'elasticsearch',
     'angulartics',
     'angulartics.google.analytics'

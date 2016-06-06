@@ -24,8 +24,8 @@
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": "http-server -a localhost -p 8000 -c-1",
-    "lint": "eslint --format=compact specs app/js",
+    "start": "gulp webserver",
+    "lint": "gulp jshint",
     "pretest": "npm install",
     "test": "karma start karma.conf.js  --single-run",
     "test-watch": "karma start karma.conf.js",

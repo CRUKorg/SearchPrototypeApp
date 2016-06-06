@@ -15,10 +15,10 @@
       <div class="row">
         <div class="col-xs-12">
 
-          <form role="search" name="searchForm" ng-submit="ctrl.executeSearch(ctrl.search_input)">
+          <form role="search" name="searchForm" ng-submit="ctrl.searchSubmit(ctrl.search_input)">
             <div class="cr-input-group cr-input-group--lg cr-search-input">
               <label for="search-input" id="search-label">Search...</label>
-              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.search_input" ng-change="ctrl.executeSearch(ctrl.search_input)" required>
+              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.search_input" ng-change="ctrl.searchSubmit(ctrl.search_input)" required>
               <span class="cr-input-group__button cr-search-input__button">
                 <button type="submit" class="btn" aria-label="Submit your search"><span class="cr-input-group__icon glyphicon glyphicon-search" aria-hidden="true"></span></button>
               </span>
@@ -31,14 +31,14 @@
       <div class="row">
         <div class="col-xs-12">
 
-          <div class="alert alert-danger" role="alert" ng-show="ctrl.error"></div>
+          <div class="alert alert-danger" role="alert" ng-show="ctrl.error">{{ctr.error}}</div>
 
           <p ng-hide="ctrl.results">No results were found :C</p>
 
           <ul class="list-unstyled" ng-show="ctrl.results">
             <li ng-repeat="doc in ctrl.results">
               <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h3>
-              <p ng-bind-html="doc.highlight['body:value'].join('... ') | htmlsafe | plaintext | limitTo: 500"></p>
+              <p ng-bind-html="doc.highlight['body:value'].join('... ') | plaintext | highlightmatches"></p>
             </li>
           </ul>
 
