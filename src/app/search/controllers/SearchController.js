@@ -10,7 +10,8 @@
     self.searchInput = null;
     self.lastSearch = null;
     self.page = 1;
-    self.resultsPerPage = config.getSetting('resultsPerPage');
+    self.resultsPerPage = config.getSetting('resultsPerPage', 10);
+    self.failedSearch = false;
 
     /**
      * Results vars.
@@ -71,8 +72,14 @@
         self.error = null;
         self.page = 1;
         self.results = body.hits.hits;
+
+        if (self.results.length < 1) {
+          self.noResults();
+        }
+        else {
+          self.failedSearch = false;
+        }
       }, function (error) {
-        console.log(error);
         self.error = error.message;
         $log.log(error.message);
       });
@@ -87,6 +94,14 @@
      */
     self.buildExcerpt = function(fieldData, highlightData) {
 
+    };
+
+    /**
+     * Output a message stating no results have been found. At this point
+     * trigger any specific GA reporting.
+     */
+    self.noResults = function() {
+      self.failedSearch = true;
     };
   }]);
 
