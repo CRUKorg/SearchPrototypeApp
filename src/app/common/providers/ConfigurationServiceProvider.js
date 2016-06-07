@@ -31,7 +31,8 @@
      * @param {string|string[]} key
      * @returns {string|int}
      */
-    self.getSetting = function(key) {
+    self.getSetting = function(key, fallback) {
+      fallback = typeof fallback !== 'undefined' ? fallback : '';
       var setting = self.appSettings;
 
       if (angular.isString(key)) {
@@ -39,7 +40,7 @@
       }
 
       if (!angular.isArray(key)) {
-        return '';
+        return fallback;
       }
 
       angular.forEach(key, function(value) {
