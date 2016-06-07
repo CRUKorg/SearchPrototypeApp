@@ -31,7 +31,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
-          <uib-alert class="search-feedback" ng-repeat="alert in ctrl.alerts" type="{{alert.type}}">{{alert.msg}}</uib-alert>
+          <uib-alert class="search-feedback" ng-repeat="alert in ctrl.alerts" type="{{alert.type}}" ng-bind-html="alert.msg | htmlsafe"></uib-alert>
 
           <ul class="search-results" ng-show="ctrl.results">
             <li class="search-results--result" ng-repeat="doc in ctrl.results">

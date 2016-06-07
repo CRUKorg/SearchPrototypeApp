@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  app.controller('SearchController', ['configurationService', 'ElasticService', 'esFactory', '$log', function(config, ElasticService, esFactory, $log) {
+  app.controller('SearchController', ['configurationService', 'ElasticService', 'esFactory', '$sanitize', '$log', function(config, ElasticService, esFactory, $sanitize, $log) {
     var self = this;
 
     /**
      * Setup variables.
      */
     self.searchInput = '';
-    self.lastSearch = null;
+    self.lastSearch = '';
     self.page = 1;
     self.resultsPerPage = config.getSetting('resultsPerPage', 10);
     self.failedSearch = false;
@@ -16,7 +16,8 @@
     /**
      * Results vars.
      */
-    self.results = null;
+    self.results = [];
+    self.alerts = [];
 
     /**
      * Form submit callback, execute a search.
@@ -77,10 +78,10 @@
         }
         else {
           self.failedSearch = false;
-          self.alertsAdd('Your search for ' + self.searchInput + ' found ' + body.hits.total + ' results in ' + body.took + ' milliseconds!', 'success');
+          self.alertsAdd('Your search for <strong>&quot;' + self.searchInput + '&quot;</strong> found <strong>' + body.hits.total + '</strong> results in <strong>' + body.took + '</strong> milliseconds!', 'success');
         }
       }, function (error) {
-        self.alertsAdd(error.message, 'danger');
+        self.alertsAdd($sanitize(error.message), 'danger');
         $log.log(error.message);
       });
     };
@@ -102,7 +103,7 @@
      */
     self.noResults = function() {
       self.failedSearch = true;
-      self.alertsAdd('Your search for ' + self.searchInput + ' returned no results', 'warning');
+      self.alertsAdd('Your search for <strong>&quot;' + self.searchInput + '&quot;</strong> returned no results', 'warning');
     };
 
     /**
