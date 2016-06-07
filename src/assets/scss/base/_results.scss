@@ -1,0 +1,18 @@
+
+.search-results {
+  @extend .list-unstyled;
+
+  .search-results--result {
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .search-results--meta {
+    @extend .list-inline;
+
+    margin-bottom: 10px;
+  }
+}
