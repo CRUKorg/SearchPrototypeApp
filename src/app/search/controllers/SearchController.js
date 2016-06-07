@@ -7,7 +7,7 @@
     /**
      * Setup variables.
      */
-    self.searchInput = null;
+    self.searchInput = '';
     self.lastSearch = null;
     self.page = 1;
     self.resultsPerPage = config.getSetting('resultsPerPage', 10);
@@ -16,7 +16,6 @@
     /**
      * Results vars.
      */
-    self.error = null;
     self.results = null;
 
     /**
@@ -24,23 +23,23 @@
      *
      * @param {string} searchInput The search query to run against Elastic.
      */
-    self.searchSubmit = function(searchInput) {
-      if (searchInput !== '' && searchInput != self.lastSearch) {
-        self.lastSearch = searchInput;
-        self.executeSearch(searchInput);
+    self.searchSubmit = function() {
+      if (self.searchInput !== '' && self.searchInput != self.lastSearch) {
+        self.lastSearch = self.searchInput;
+        self.executeSearch(self.searchInput);
       }
     };
 
     /**
      * Execute a search against Elastic.
      *
-     * @param {string} searchInput The query to run against Elastic.
+     * @param {string} text The query to run against Elastic.
      */
-    self.executeSearch = function(searchInput) {
+    self.executeSearch = function(text) {
       /**
        * Search! First clear any errors.
        */
-      self.error = null;
+      self.alertsClear();
 
       ElasticService.search({
         index: 'elasticsearch_index_elasticproto_news',
@@ -51,7 +50,7 @@
             multi_match: {
               type: 'phrase',
               fields: ['title', 'body:value'],
-              query: searchInput
+              query: text
             }
           },
           fields: ['title', 'field_published', 'field_type', 'body:value', 'field_url:url'],
@@ -69,7 +68,7 @@
         }
       }).then(function (body) {
         $log.log(body);
-        self.error = null;
+        self.alertsClear();
         self.page = 1;
         self.results = body.hits.hits;
 
@@ -78,9 +77,10 @@
         }
         else {
           self.failedSearch = false;
+          self.alertsAdd('Your search for ' + self.searchInput + ' found ' + body.hits.total + ' results in ' + body.took + ' milliseconds!', 'success');
         }
       }, function (error) {
-        self.error = error.message;
+        self.alertsAdd(error.message, 'danger');
         $log.log(error.message);
       });
     };
@@ -102,6 +102,26 @@
      */
     self.noResults = function() {
       self.failedSearch = true;
+      self.alertsAdd('Your search for ' + self.searchInput + ' returned no results', 'warning');
+    };
+
+    /**
+     * Add an alert to the output area.
+     */
+    self.alertsAdd = function(message, type) {
+      type = type || 'info';
+
+      self.alerts.push({
+        msg: message,
+        type: type
+      });
+    };
+
+    /**
+     * Dismiss all alerts.
+     */
+    self.alertsClear = function() {
+      self.alerts = [];
     };
   }]);
 

@@ -5,6 +5,7 @@
     'ui.router',
     'ngSanitize',
     'elasticsearch',
+    'ui.bootstrap',
     'angulartics',
     'angulartics.google.analytics'
   ]);

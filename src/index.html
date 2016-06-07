@@ -15,10 +15,10 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
-          <form role="search" name="searchForm" ng-submit="ctrl.searchSubmit(ctrl.search_input)">
+          <form role="search" name="searchForm" ng-submit="ctrl.searchSubmit()">
             <div class="cr-input-group cr-input-group--lg cr-search-input">
               <label for="search-input" id="search-label">Search...</label>
-              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.search_input" ng-change="ctrl.searchSubmit(ctrl.search_input)" required>
+              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.searchInput" ng-change="ctrl.searchSubmit()">
               <span class="cr-input-group__button cr-search-input__button">
                 <button type="submit" class="btn" aria-label="Submit your search"><span class="cr-input-group__icon glyphicon glyphicon-search" aria-hidden="true"></span></button>
               </span>
@@ -31,9 +31,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
-          <div class="alert alert-danger" role="alert" ng-show="ctrl.error">{{ctrl.error}}</div>
-
-          <div class="search-failed" ng-show="ctrl.failedSearch">Your search for &quot;{{ctrl.search_input}}&quot; returned no results</div>
+          <uib-alert class="search-feedback" ng-repeat="alert in ctrl.alerts" type="{{alert.type}}">{{alert.msg}}</uib-alert>
 
           <ul class="search-results" ng-show="ctrl.results">
             <li class="search-results--result" ng-repeat="doc in ctrl.results">

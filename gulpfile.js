@@ -61,7 +61,8 @@ gulp.task('build-vendor-js', function() {
       './bower_components/elastic.js/dist/elastic.min.js',
       './bower_components/elasticsearch/elasticsearch.angular.js',
       //'./bower_components/elasticui/dist/elasticui.min.js',
-      './bower_components/angular-sanitize/angular-sanitize.min.js'
+      './bower_components/angular-sanitize/angular-sanitize.min.js',
+      './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
     ])
     .pipe(plugins.concat('vendor.min.js'))
     .pipe(gulp.dest('./src'));
