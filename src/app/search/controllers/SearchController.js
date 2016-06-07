@@ -17,6 +17,7 @@
      * Results vars.
      */
     self.results = [];
+    self.totalItems = 0;
     self.alerts = [];
 
     /**
@@ -27,7 +28,7 @@
     self.searchSubmit = function() {
       if (self.searchInput !== '' && self.searchInput != self.lastSearch) {
         self.lastSearch = self.searchInput;
-        self.executeSearch(self.searchInput);
+        self.executeSearch(self.searchInput, true);
       }
     };
 
@@ -36,11 +37,16 @@
      *
      * @param {string} text The query to run against Elastic.
      */
-    self.executeSearch = function(text) {
+    self.executeSearch = function(text, newSearch) {
       /**
        * Search! First clear any errors.
        */
       self.alertsClear();
+      newSearch = newSearch || false;
+
+      if (newSearch && self.page !== 1) {
+        self.page = 1;
+      }
 
       ElasticService.search({
         index: 'elasticsearch_index_elasticproto_news',
@@ -70,15 +76,16 @@
       }).then(function (body) {
         $log.log(body);
         self.alertsClear();
-        self.page = 1;
+        /*self.page = 1;*/
         self.results = body.hits.hits;
+        self.totalItems = body.hits.total;
 
-        if (self.results.length < 1) {
+        if (self.totalItems < 1) {
           self.noResults();
         }
         else {
           self.failedSearch = false;
-          self.alertsAdd('Your search for <strong>&quot;' + self.searchInput + '&quot;</strong> found <strong>' + body.hits.total + '</strong> results in <strong>' + body.took + '</strong> milliseconds!', 'success');
+          self.alertsAdd('Your search for <strong>&quot;' + self.searchInput + '&quot;</strong> found <strong>' + self.totalItems + '</strong> results in <strong>' + body.took + '</strong> milliseconds!', 'success');
         }
       }, function (error) {
         self.alertsAdd($sanitize(error.message), 'danger');
@@ -123,6 +130,13 @@
      */
     self.alertsClear = function() {
       self.alerts = [];
+    };
+
+    /**
+     * Set the page of results to view.
+     */
+    self.setPage = function() {
+      self.executeSearch(self.lastSearch);
     };
   }]);
 
