@@ -33,6 +33,8 @@
 
           <uib-alert class="search-feedback" ng-repeat="alert in ctrl.alerts" type="{{alert.type}}" ng-bind-html="alert.msg | htmlsafe"></uib-alert>
 
+          <a name="results"></a>
+
           <ul class="search-results" ng-show="ctrl.results">
             <li class="search-results--result" ng-repeat="doc in ctrl.results">
               <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h3>
@@ -44,7 +46,7 @@
             </li>
           </ul>
 
-          <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.page" ng-click="ctrl.setPage()" ng-show="ctrl.results"></uib-pager>
+          <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.page" ng-click="ctrl.setPage()" ng-show="ctrl.lastSearch"></uib-pager>
 
         </div>
       </div>
