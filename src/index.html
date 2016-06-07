@@ -13,7 +13,7 @@
   <body ng-app="searchPrototypeApp">
     <div class="container" ng-controller="SearchController as ctrl">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
           <form role="search" name="searchForm" ng-submit="ctrl.searchSubmit(ctrl.search_input)">
             <div class="cr-input-group cr-input-group--lg cr-search-input">
@@ -29,15 +29,19 @@
       </div>
 
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
-          <div class="alert alert-danger" role="alert" ng-show="ctrl.error">{{ctr.error}}</div>
+          <div class="alert alert-danger" role="alert" ng-show="ctrl.error">{{ctrl.error}}</div>
 
-          <p ng-hide="ctrl.results">No results were found :C</p>
+          <div class="search-failed" ng-show="ctrl.failedSearch">Your search for &quot;{{ctrl.search_input}}&quot; returned no results</div>
 
-          <ul class="list-unstyled" ng-show="ctrl.results">
-            <li ng-repeat="doc in ctrl.results">
+          <ul class="search-results" ng-show="ctrl.results">
+            <li class="search-results--result" ng-repeat="doc in ctrl.results">
               <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h3>
+              <ul class="search-results--meta">
+                <li><strong>{{doc.fields.field_type[0]}}</strong></li>
+                <li><strong>Published:</strong> {{doc.fields.field_published[0] | dateos:'dS MMMM yyyy'}}</li>
+              </ul>
               <p ng-bind-html="doc.highlight['body:value'].join('... ') | plaintext | highlightmatches"></p>
             </li>
           </ul>
