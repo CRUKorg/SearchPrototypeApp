@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  app.controller('SearchController', ['configurationService', 'ElasticService', 'esFactory', '$sanitize', '$location', '$anchorScroll', '$log',
-    function(config, ElasticService, esFactory, $sanitize, $location, $anchorScroll, $log) {
+  app.controller('SearchController', ['configurationService', 'ElasticService', 'esFactory', '$sanitize', '$location', '$document', '$log',
+    function(config, ElasticService, esFactory, $sanitize, $location, $document, $log) {
     var self = this;
 
     /**
@@ -139,7 +139,7 @@
     self.setPage = function() {
       self.executeSearch(self.lastSearch);
       $location.hash('top');
-      $anchorScroll();
+      $document.scrollTopAnimated(0);
     };
   }]);
 

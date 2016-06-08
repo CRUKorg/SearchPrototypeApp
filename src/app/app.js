@@ -6,6 +6,7 @@
     'ngSanitize',
     'elasticsearch',
     'ui.bootstrap',
+    'duScroll',
     'angulartics',
     'angulartics.google.analytics'
   ]);

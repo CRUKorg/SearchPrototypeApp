@@ -11,7 +11,7 @@
     <link href="assets/css/vendor.min.css" rel="stylesheet">
   </head>
   <body ng-app="searchPrototypeApp">
-    <div class="container" ng-controller="SearchController as ctrl">
+    <div id="searchPrototypeApp" class="container" ng-controller="SearchController as ctrl">
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
@@ -46,7 +46,7 @@
             </li>
           </ul>
 
-          <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.page" ng-click="ctrl.setPage()" ng-show="ctrl.lastSearch"></uib-pager>
+          <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.page" ng-change="ctrl.setPage()" ng-show="ctrl.results.length > 0"></uib-pager>
 
         </div>
       </div>
