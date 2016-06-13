@@ -9,8 +9,8 @@
        * Setup variables.
        */
       self.search = {
-        text: $stateParams.query || '',
-        input: $stateParams.query || '',
+        text: decodeURI($stateParams.query) || '',
+        input: decodeURI($stateParams.query) || '',
         page: $stateParams.page && parseInt($stateParams.page) || 1,
       };
       self.alerts = [];
@@ -156,7 +156,7 @@
        */
       self.updateState = function(text, page) {
         if ($stateParams.query !== text && $stateParams.page !== page) {
-          $state.go('search', {query: self.search.text, page: self.search.page}, {notify: false});
+          $state.go('search', {query: encodeURI(self.search.text), page: self.search.page}, {notify: false});
         }
       };
 
