@@ -5,12 +5,13 @@
    * Define the ElasticSearch service as per...
    * https://github.com/elastic/bower-elasticsearch-js
    */
-  app.service('ElasticService', function (esFactory) {
-    return esFactory({
-      host: crukSearch.config.host,
-      apiVersion: '2.3',
-      log: 'trace'
-    });
-  });
+  app.service('ElasticService', ['esFactory', 'configurationService',
+    function (esFactory, config) {
+      return esFactory({
+        host: crukSearch.config.host,
+        apiVersion: '2.3',
+        log: config.getSetting('debug', false) ? 'trace' : 'error'
+      });
+  }]);
 
 }());

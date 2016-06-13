@@ -11,4 +11,28 @@
     'angulartics.google.analytics'
   ]);
 
+  /**
+   * Define our routes.
+   */
+  global.app.config(function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('search');
+
+    $stateProvider.state('search', {
+      url: '/search?query&page',
+      controller: 'SearchController',
+      controllerAs: 'ctrl',
+      params: {
+        query: {
+          value: '',
+          squash: true
+        },
+        page: {
+          value: '1',
+          squash: true
+        }
+      },
+      templateUrl: 'search.html'
+    });
+  });
+
 }(this));

@@ -7,6 +7,7 @@
     self.appSettings = {
       'host': '',
       'resultsPerPage': 10,
+      'debug': false,
       'strings': {}
     };
 
