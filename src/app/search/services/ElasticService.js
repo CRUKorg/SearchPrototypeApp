@@ -8,7 +8,7 @@
   app.service('ElasticService', ['esFactory', 'configurationService',
     function (esFactory, config) {
       return esFactory({
-        host: crukSearch.config.host,
+        host: config.getSetting('host', ''),
         apiVersion: '2.3',
         log: config.getSetting('debug', false) ? 'trace' : 'error'
       });
