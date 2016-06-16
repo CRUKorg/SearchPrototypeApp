@@ -11,7 +11,7 @@
       self.search = {
         text: decodeURI($stateParams.query) || '',
         input: decodeURI($stateParams.query) || '',
-        page: $stateParams.page && parseInt($stateParams.page) || 1,
+        page: parseInt($stateParams.page) || 1,
       };
       self.alerts = [];
 
@@ -163,9 +163,9 @@
       /**
        * Execute a search if the default state says so.
        */
-      if (self.search.text !== '') {
+      /*if (self.search.text !== '') {
         self.executeSearch(self.search.text);
-      }
+      }*/
     }]);
 
 }());
