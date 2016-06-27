@@ -11,7 +11,7 @@
       self.search = {
         text: decodeURI($stateParams.query) || '',
         input: decodeURI($stateParams.query) || '',
-        page: parseInt($stateParams.page) || 1,
+        page: parseInt($stateParams.page) || 1
       };
       self.alerts = [];
 
@@ -37,7 +37,10 @@
       self.searchSubmit = function() {
         if (self.search.input !== '' && self.search.input != self.search.text) {
           self.search.text = self.search.input;
+          self.search.page = 1;
+
           self.executeSearch(self.search.input, true);
+          self.updateState(self.search.text, self.search.page);
         }
       };
 
@@ -53,12 +56,12 @@
         self.alertsClear();
         newSearch = newSearch || false;
 
-        if (newSearch && self.search.page !== 1) {
+        /*if (newSearch && self.search.page !== 1) {
           self.search.page = 1;
-        }
+        }*/
 
         ElasticService.search({
-          index: 'elasticsearch_index_elasticproto_news',
+          index: config.getSetting('index', ''),
           from: (self.search.page - 1) * self.resultsPerPage,
           size: self.resultsPerPage,
           body: {
@@ -66,7 +69,9 @@
               multi_match: {
                 type: 'phrase',
                 fields: ['title', 'body:value'],
-                query: text
+                query: text,
+                analyzer: 'news'
+                //fuzziness: 'AUTO'
               }
             },
             fields: ['title', 'field_published', 'field_type', 'body:value', 'field_url:url'],
@@ -97,7 +102,7 @@
           }
 
           // Update the page state.
-          self.updateState(self.search.text, self.search.page);
+          //self.updateState(self.search.text, self.search.page);
         }, function (error) {
           self.alertsAdd($sanitize(error.message), 'danger');
         });
@@ -148,24 +153,28 @@
       self.setPage = function() {
         self.executeSearch(self.search.text);
         $document.scrollTopAnimated(0);
-        self.updateState(self.search.text, self.search.page);
+        //self.updateState(self.search.text, self.search.page);
       };
 
       /**
        * Update state.
        */
       self.updateState = function(text, page) {
-        if ($stateParams.query !== text && $stateParams.page !== page) {
-          $state.go('search', {query: encodeURI(self.search.text), page: self.search.page}, {notify: false});
+        console.log($stateParams.page);
+        console.log(page);
+        var decoded_query = decodeURI(self.search.text);
+
+        if (decoded_query !== text || $stateParams.page !== page) {
+          $state.go('search', {query: encodeURI(text), page: self.search.page}, {notify: true});
         }
       };
 
       /**
        * Execute a search if the default state says so.
        */
-      /*if (self.search.text !== '') {
+      if (self.search.text !== '') {
         self.executeSearch(self.search.text);
-      }*/
+      }
     }]);
 
 }());
