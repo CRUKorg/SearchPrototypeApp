@@ -6,6 +6,7 @@
 
     self.appSettings = {
       'host': '',
+      'index': '',
       'resultsPerPage': 10,
       'debug': false,
       'strings': {}
