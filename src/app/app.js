@@ -2,6 +2,7 @@
   'use strict';
 
   global.app = angular.module('searchPrototypeApp', [
+    'templates',
     'ui.router',
     'ngSanitize',
     'elasticsearch',
@@ -31,7 +32,7 @@
           squash: true
         }
       },
-      templateUrl: 'search.html'
+      templateUrl: 'search/controllers/search.html'
     });
   });
 

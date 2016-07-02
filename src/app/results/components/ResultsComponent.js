@@ -9,7 +9,7 @@
       results: '<',
       totalItems: '<'
     },
-    templateUrl: 'app/results/components/ResultsComponent.html'
+    templateUrl: 'results/components/ResultsComponent.html'
   });
 
 }());

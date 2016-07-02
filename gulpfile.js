@@ -6,12 +6,29 @@ var gulp = require('gulp'),
     pkg = require('./package.json');
 
 var project_name = pkg.name;
+var scss_paths = './src/assets/scss/**/*.scss';
+var js_paths = ['./src/app/*.js', './src/app/**/*.js', './src/app/**/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'];
+var vendor_js_paths = [
+  './bower_components/angular/angular.min.js',
+  './bower_components/angular-ui-router/release/angular-ui-router.min.js',
+  './bower_components/angulartics/dist/angulartics.min.js',
+  './bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
+  './bower_components/jquery/dist/jquery.min.js',
+  './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js',
+  './bower_components/elastic.js/dist/elastic.min.js',
+  './bower_components/elasticsearch/elasticsearch.angular.js',
+  //'./bower_components/elasticui/dist/elasticui.min.js',
+  './bower_components/angular-sanitize/angular-sanitize.min.js',
+  './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+  './bower_components/angular-scroll/angular-scroll.min.js'
+];
+var template_paths = ['./src/app/**/*.html', './src/app/**/**/*.html'];
 
 /**
  * Task to rebuild CSS files.
  */
 gulp.task('build-css', function() {
-  return gulp.src('./src/assets/scss/**/*.scss')
+  return gulp.src(scss_paths)
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.concat(project_name + '.min.css'))
     .pipe(plugins.autoprefixer({
@@ -32,7 +49,7 @@ gulp.task('build-css', function() {
  * Setup jshint, look at JS files which aren't minified.
  */
 gulp.task('jshint', function() {
-  return gulp.src(['./src/app/*.js', './src/app/**/*.js', './src/app/**/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
+  return gulp.src(js_paths)
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });
@@ -41,7 +58,7 @@ gulp.task('jshint', function() {
  * Build the JS files into one, minified named file with sourcemaps.
  */
 gulp.task('build-js', function() {
-  return gulp.src(['./src/app/*.js', './src/app/**/*.js', './src/app/**/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'])
+  return gulp.src(js_paths)
     .pipe(plugins.concat(project_name + '.min.js'))
     .pipe(plugins.uglify({mangle: false}))
     .pipe(gulp.dest('./src'));
@@ -51,20 +68,7 @@ gulp.task('build-js', function() {
  * Build the vendor JavaScript.
  */
 gulp.task('build-vendor-js', function() {
-  return gulp.src([
-      './bower_components/angular/angular.min.js',
-      './bower_components/angular-ui-router/release/angular-ui-router.min.js',
-      './bower_components/angulartics/dist/angulartics.min.js',
-      './bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
-      './bower_components/jquery/dist/jquery.min.js',
-      './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js',
-      './bower_components/elastic.js/dist/elastic.min.js',
-      './bower_components/elasticsearch/elasticsearch.angular.js',
-      //'./bower_components/elasticui/dist/elasticui.min.js',
-      './bower_components/angular-sanitize/angular-sanitize.min.js',
-      './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-      './bower_components/angular-scroll/angular-scroll.min.js'
-    ])
+  return gulp.src(vendor_js_paths)
     .pipe(plugins.concat('vendor.min.js'))
     .pipe(gulp.dest('./src'));
 });
@@ -84,11 +88,23 @@ gulp.task('build-vendor-css', function() {
 gulp.task('build-vendor', ['build-vendor-js', 'build-vendor-css']);
 
 /**
+ * Watch task for template files.
+ */
+gulp.task('build-templates', function () {
+  return gulp.src(template_paths)
+    .pipe(plugins.angularTemplatecache('template-cache.js', {
+      standalone: true
+    }))
+    .pipe(gulp.dest('./src/app/common'));
+});
+
+/**
  * Watch the files for changes, run code checks and compile SCSS.
  */
 gulp.task('watch', function() {
   gulp.watch(['./src/assets/scss/*.scss', './src/assets/scss/**/*.scss'], ['build-css']);
   gulp.watch(['./src/app/*.js', './src/app/**/*.js'], ['jshint', 'build-js']);
+  gulp.watch(template_paths, ['build-templates']);
 });
 
 /**

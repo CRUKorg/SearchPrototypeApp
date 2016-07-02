@@ -10,7 +10,7 @@
         input: '='
       }
     },
-    templateUrl: 'app/input/components/InputComponent.html'
+    templateUrl: 'input/components/InputComponent.html'
   });
 
 }());
