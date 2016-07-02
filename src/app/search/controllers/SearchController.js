@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  app.controller('SearchController', ['configurationService', 'ElasticService', 'esFactory', '$sanitize', '$state', '$stateParams', '$location', '$document', '$log',
-    function(config, ElasticService, esFactory, $sanitize, $state, $stateParams, $location, $document, $log) {
+  app.controller('SearchController', ['configurationService', 'ElasticService', 'esFactory', '$sanitize', '$state', '$stateParams', '$document', '$log',
+    function(config, ElasticService, esFactory, $sanitize, $state, $stateParams, $document, $log) {
       var self = this;
 
       /**
@@ -49,18 +49,38 @@
        *
        * @param {string} text The query to run against Elastic.
        */
-      self.executeSearch = function(text, newSearch) {
+      self.executeSearch = function(text) {
         /**
          * Search! First clear any errors.
          */
         self.alertsClear();
-        newSearch = newSearch || false;
 
-        /*if (newSearch && self.search.page !== 1) {
-          self.search.page = 1;
-        }*/
+            var new_results = [];
+            var i = 0;
+            for (i = 0; i < self.resultsPerPage; i++) {
+              var i2 = (self.search.page * self.resultsPerPage) + i;
+              var snippet = '';
+              var item = {
+                'fields': {
+                  'title': ['Result'],
+                  'field_url:url': ['http://www.cruk.org'],
+                  'field_type': ['News'],
+                  'field_published': [1467409896],
+                },
+                'highlight': {
+                  'body:value': [i2 + ' blah blah blah blah blah blah blah blah']
+                }
+              };
+              new_results.push(item);
+            }
+            self.results = new_results;
+            self.totalItems = 2311;
 
-        ElasticService.search({
+            self.failedSearch = false;
+            self.alertsAdd('Your search for <strong>&quot;' + $sanitize(self.search.input) + '&quot;</strong> found <strong>' + self.totalItems + '</strong> results in <strong>?</strong> milliseconds!', 'success');
+            self.updateState(self.search.text, self.search.page);
+
+        /*ElasticService.search({
           index: config.getSetting('index', ''),
           from: (self.search.page - 1) * self.resultsPerPage,
           size: self.resultsPerPage,
@@ -89,7 +109,7 @@
           }
         }).then(function (body) {
           self.alertsClear();
-          /*self.search.page = 1;*/
+          //self.search.page = 1;
           self.results = body.hits.hits;
           self.totalItems = body.hits.total;
 
@@ -98,14 +118,14 @@
           }
           else {
             self.failedSearch = false;
-            self.alertsAdd('Your search for <strong>&quot;' + self.search.input + '&quot;</strong> found <strong>' + self.totalItems + '</strong> results in <strong>' + body.took + '</strong> milliseconds!', 'success');
+            self.alertsAdd('Your search for <strong>&quot;' + $sanitize(self.search.input) + '&quot;</strong> found <strong>' + self.totalItems + '</strong> results in <strong>' + body.took + '</strong> milliseconds!', 'success');
           }
 
           // Update the page state.
-          //self.updateState(self.search.text, self.search.page);
+          self.updateState(self.search.text, self.search.page);
         }, function (error) {
           self.alertsAdd($sanitize(error.message), 'danger');
-        });
+        });*/
       };
 
       /**
@@ -160,12 +180,10 @@
        * Update state.
        */
       self.updateState = function(text, page) {
-        console.log($stateParams.page);
-        console.log(page);
         var decoded_query = decodeURI(self.search.text);
 
         if (decoded_query !== text || $stateParams.page !== page) {
-          $state.go('search', {query: encodeURI(text), page: self.search.page}, {notify: true});
+          $state.go('.', {query: encodeURI(text), page: self.search.page}, {notify: true});
         }
       };
 

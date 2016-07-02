@@ -2,15 +2,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
-          <form role="search" name="searchForm" ng-submit="ctrl.searchSubmit()">
-            <div class="cr-input-group cr-input-group--lg cr-search-input">
-              <label for="search-input" id="search-label">Search...</label>
-              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.search.input">
-              <span class="cr-input-group__button cr-search-input__button">
-                <button type="submit" class="btn" aria-label="Submit your search"><span class="cr-input-group__icon glyphicon glyphicon-search" aria-hidden="true"></span></button>
-              </span>
-            </div>
-          </form>
+        <search-input></search-input>
 
         </div>
       </div>
@@ -22,16 +14,7 @@
 
           <a name="results"></a>
 
-          <ul class="search-results" ng-show="ctrl.results">
-            <li class="search-results--result" ng-repeat="doc in ctrl.results">
-              <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h3>
-              <ul class="search-results--meta">
-                <li><strong>{{doc.fields.field_type[0]}}</strong></li>
-                <li><strong>Published:</strong> {{doc.fields.field_published[0] | dateos:'dS MMMM yyyy'}}</li>
-              </ul>
-              <p ng-bind-html="doc.highlight['body:value'].join('... ') | plaintext | highlightmatches"></p>
-            </li>
-          </ul>
+          <search-results></search-results>
 
           <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.search.page" ng-change="ctrl.setPage()" ng-show="ctrl.results.length > 0"></uib-pager>
 
