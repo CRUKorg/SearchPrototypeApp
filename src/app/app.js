@@ -2,7 +2,7 @@
   'use strict';
 
   global.app = angular.module('searchPrototypeApp', [
-    'templates',
+    'templateCache',
     'ui.router',
     'ngSanitize',
     'elasticsearch',

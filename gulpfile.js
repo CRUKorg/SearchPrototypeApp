@@ -93,6 +93,7 @@ gulp.task('build-vendor', ['build-vendor-js', 'build-vendor-css']);
 gulp.task('build-templates', function () {
   return gulp.src(template_paths)
     .pipe(plugins.angularTemplatecache('template-cache.js', {
+      module: 'templateCache',
       standalone: true
     }))
     .pipe(gulp.dest('./src/app/common'));
