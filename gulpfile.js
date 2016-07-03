@@ -70,6 +70,7 @@ gulp.task('build-js', function() {
 gulp.task('build-vendor-js', function() {
   return gulp.src(vendor_js_paths)
     .pipe(plugins.concat('vendor.min.js'))
+    .pipe(plugins.uglify({mangle: false}))
     .pipe(gulp.dest('./src'));
 });
 
