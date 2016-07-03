@@ -13,7 +13,6 @@
         input: decodeURI($stateParams.query) || '',
         page: parseInt($stateParams.page) || 1
       };
-      self.alerts = [];
 
       /**
        * Results vars.
@@ -50,25 +49,21 @@
        * @param {string} text The query to run against Elastic.
        */
       self.executeSearch = function(text) {
-        /**
-         * Search! First clear any errors.
-         */
-        self.alertsClear();
 
             var new_results = [];
             var i = 0;
             for (i = 0; i < self.resultsPerPage; i++) {
-              var i2 = (self.search.page * self.resultsPerPage) + i;
+              var i2 = (self.search.page * self.resultsPerPage) + i - 9;
               var snippet = '';
               var item = {
                 'fields': {
-                  'title': ['Result'],
+                  'title': ['Result #' + i2],
                   'field_url:url': ['http://www.cruk.org'],
                   'field_type': ['News'],
                   'field_published': [1467409896],
                 },
                 'highlight': {
-                  'body:value': [i2 + ' blah blah blah blah blah blah blah blah']
+                  'body:value': ['Blah blah blah blah blah blah blah blah']
                 }
               };
               new_results.push(item);
@@ -77,7 +72,6 @@
             self.totalItems = 2311;
 
             self.failedSearch = false;
-            self.alertsAdd('Your search for <strong>&quot;' + $sanitize(self.search.input) + '&quot;</strong> found <strong>' + self.totalItems + '</strong> results in <strong>?</strong> milliseconds!', 'success');
             self.updateState(self.search.text, self.search.page);
 
         /*ElasticService.search({
@@ -108,7 +102,6 @@
             }
           }
         }).then(function (body) {
-          self.alertsClear();
           //self.search.page = 1;
           self.results = body.hits.hits;
           self.totalItems = body.hits.total;
@@ -118,13 +111,12 @@
           }
           else {
             self.failedSearch = false;
-            self.alertsAdd('Your search for <strong>&quot;' + $sanitize(self.search.input) + '&quot;</strong> found <strong>' + self.totalItems + '</strong> results in <strong>' + body.took + '</strong> milliseconds!', 'success');
           }
 
           // Update the page state.
           self.updateState(self.search.text, self.search.page);
         }, function (error) {
-          self.alertsAdd($sanitize(error.message), 'danger');
+          $log.log('Ruh roh, sometihng went wrong when talking to Elastic... ' + $sanitize(error.message));
         });*/
       };
 
@@ -145,26 +137,6 @@
        */
       self.noResults = function() {
         self.failedSearch = true;
-        self.alertsAdd('Your search for <strong>&quot;' + self.search.input + '&quot;</strong> returned no results', 'warning');
-      };
-
-      /**
-       * Add an alert to the output area.
-       */
-      self.alertsAdd = function(message, type) {
-        type = type || 'info';
-
-        self.alerts.push({
-          msg: message,
-          type: type
-        });
-      };
-
-      /**
-       * Dismiss all alerts.
-       */
-      self.alertsClear = function() {
-        self.alerts = [];
       };
 
       /**

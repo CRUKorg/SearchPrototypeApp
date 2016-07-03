@@ -2,4 +2,7 @@
 @import "base/variables";
 @import "../../../bower_components/cruk-pattern-library/assets/scss/cruk-base";
 @import "base/layout";
-@import "base/results";
+
+@import "partials/emoji";
+@import "partials/summary";
+@import "partials/results";

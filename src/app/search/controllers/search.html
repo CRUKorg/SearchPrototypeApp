@@ -10,13 +10,15 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
 
-          <uib-alert class="search-feedback" ng-repeat="alert in ctrl.alerts" type="{{alert.type}}" ng-bind-html="alert.msg | htmlsafe"></uib-alert>
+          <search-summary></search-summary>
+
+          <uib-alert class="search-summary" ng-repeat="alert in ctrl.alerts" type="{{alert.type}}" ng-bind-html="alert.msg | htmlsafe"></uib-alert>
 
           <a name="results"></a>
 
           <search-results></search-results>
 
-          <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.search.page" ng-change="ctrl.setPage()" ng-show="ctrl.results.length > 0"></uib-pager>
+          <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.search.page" ng-change="ctrl.setPage()" ng-if="ctrl.totalItems > 0"></uib-pager>
 
         </div>
       </div>

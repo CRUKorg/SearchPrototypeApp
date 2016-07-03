@@ -1,0 +1,15 @@
+
+.emoji {
+  position: relative;
+  display: inline-block;
+  width: 28px;
+
+  img {
+    position: absolute;
+    top: -18px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    vertical-align: top;
+  }
+}

@@ -1,10 +1,12 @@
-          <ul class="search-results" ng-show="ctrl.results">
-            <li class="search-results--result" ng-repeat="doc in ctrl.results">
-              <h3><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h3>
-              <ul class="search-results--meta">
-                <li><strong>{{doc.fields.field_type[0]}}</strong></li>
-                <li><strong>Published:</strong> {{doc.fields.field_published[0] | dateos:'dS MMMM yyyy'}}</li>
-              </ul>
-              <p ng-bind-html="doc.highlight['body:value'].join('... ') | plaintext | highlightmatches"></p>
+          <ul class="search-results" ng-if="ctrl.results">
+            <li class="search-result" ng-repeat="doc in ctrl.results">
+              <div class="media-body">
+                <h4 class="search-result__title"><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h4>
+                <ul class="search-result__meta">
+                  <li><strong>{{doc.fields.field_type[0]}}</strong></li>
+                  <li><strong>Published:</strong> {{doc.fields.field_published[0] | dateos:'dS MMMM yyyy'}}</li>
+                </ul>
+                <p class="search-result__excerpt" ng-bind-html="doc.highlight['body:value'].join('... ') | plaintext | highlightmatches"></p>
+              </div>
             </li>
           </ul>

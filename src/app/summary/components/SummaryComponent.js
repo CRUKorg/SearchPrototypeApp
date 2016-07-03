@@ -6,7 +6,9 @@
     controller: 'SearchController',
     controllerAs: 'ctrl',
     bindToController: {
-      results: '<',
+      search: {
+        text: '<'
+      },
       totalItems: '<'
     },
     templateUrl: 'summary/components/SummaryComponent.html'
