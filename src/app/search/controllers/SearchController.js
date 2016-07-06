@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  app.controller('SearchController', ['configurationService', 'ElasticService', 'esFactory', '$sanitize', '$state', '$stateParams', '$document', '$log',
-    function(config, ElasticService, esFactory, $sanitize, $state, $stateParams, $document, $log) {
+  app.controller('SearchController', ['$scope', 'configurationService', 'ElasticService', 'esFactory', '$sanitize', '$state', '$stateParams', '$document', '$log', '$analytics',
+    function($scope, config, ElasticService, esFactory, $sanitize, $state, $stateParams, $document, $log, $analytics) {
       var self = this;
 
       /**
@@ -10,7 +10,6 @@
        */
       self.search = {
         text: decodeURI($stateParams.query) || '',
-        input: decodeURI($stateParams.query) || '',
         page: parseInt($stateParams.page) || 1
       };
 
@@ -23,34 +22,13 @@
       self.failedSearch = false;
 
       /**
-       * If last search is set and not blank then we should kick off a search,
-       * this is done at the end of the file so that the "executeSearch" method
-       * is defined.
-       */
-
-      /**
-       * Form submit callback, execute a search.
-       *
-       * @param {string} search.input The search query to run against Elastic.
-       */
-      self.searchSubmit = function() {
-        if (self.search.input !== '' && self.search.input != self.search.text) {
-          self.search.text = self.search.input;
-          self.search.page = 1;
-
-          self.executeSearch(self.search.input, true);
-          self.updateState(self.search.text, self.search.page);
-        }
-      };
-
-      /**
        * Execute a search against Elastic.
        *
        * @param {string} text The query to run against Elastic.
        */
       self.executeSearch = function(text) {
-
-            var new_results = [];
+console.log('do a search for ' + text, self.search);
+            /*var new_results = [];
             var i = 0;
             for (i = 0; i < self.resultsPerPage; i++) {
               var i2 = (self.search.page * self.resultsPerPage) + i - 9;
@@ -72,9 +50,9 @@
             self.totalItems = 2311;
 
             self.failedSearch = false;
-            self.updateState(self.search.text, self.search.page);
+            self.updateState(self.search.text, self.search.page);*/
 
-        /*ElasticService.search({
+        ElasticService.search({
           index: config.getSetting('index', ''),
           from: (self.search.page - 1) * self.resultsPerPage,
           size: self.resultsPerPage,
@@ -93,7 +71,7 @@
               pre_tags: ['[mark]'],
               post_tags: ['[/mark]'],
               //encoder: 'html',
-              fragment_size: 150,
+              fragment_size: 80,
               number_of_fragments: 3,
               fields: {
                 title: {},
@@ -105,7 +83,7 @@
           //self.search.page = 1;
           self.results = body.hits.hits;
           self.totalItems = body.hits.total;
-
+console.log(self.results);
           if (self.totalItems < 1) {
             self.noResults();
           }
@@ -117,7 +95,7 @@
           self.updateState(self.search.text, self.search.page);
         }, function (error) {
           $log.log('Ruh roh, sometihng went wrong when talking to Elastic... ' + $sanitize(error.message));
-        });*/
+        });
       };
 
       /**
@@ -137,15 +115,22 @@
        */
       self.noResults = function() {
         self.failedSearch = true;
+        $analytics.eventTrack('searchNoResults', {category: 'News prototype search', label: 'No results'});
       };
 
       /**
        * Set the page of results to view.
        */
       self.setPage = function() {
+        /**
+         * Track page change event.
+         */
+        $analytics.eventTrack('searchPaged', {category: 'News prototype search ', label: 'Search paged'});
+
+        /**
+         * Execute the search of the next page.
+         */
         self.executeSearch(self.search.text);
-        $document.scrollTopAnimated(0);
-        //self.updateState(self.search.text, self.search.page);
       };
 
       /**
@@ -153,9 +138,28 @@
        */
       self.updateState = function(text, page) {
         var decoded_query = decodeURI(self.search.text);
+        var encoded_query = encodeURI(text);
 
-        if (decoded_query !== text || $stateParams.page !== page) {
-          $state.go('.', {query: encodeURI(text), page: self.search.page}, {notify: true});
+        if ($stateParams.query !== encoded_query || $stateParams.page !== page) {
+          /**
+           * Push events to analytics (GA).
+           */
+          if ($stateParams.query !== encoded_query) {
+            $analytics.pageTrack('/search?query=' + encoded_query);
+            $analytics.eventTrack('search', {category: 'News prototype search ', label: 'Search'});
+          }
+
+          /**
+           * Scroll to the top of the page.
+           */
+          if ($stateParams.page !== page) {
+            $document.scrollTopAnimated(0);
+          }
+
+          /**
+           * Update the application state/URL.
+           */
+          //$state.go('.', {query: encoded_query, page: self.search.page}, {notify: true});
         }
       };
 
@@ -163,8 +167,15 @@
        * Execute a search if the default state says so.
        */
       if (self.search.text !== '') {
-        self.executeSearch(self.search.text);
+        //self.executeSearch(self.search.text);
       }
+
+      $scope.$on('searchSubmitted', function(event, data){
+        self.search.text = data.query;
+        self.search.page = 1;
+
+        self.executeSearch(self.search.text);
+      });
     }]);
 
 }());
