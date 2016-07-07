@@ -1,5 +1,6 @@
-          <ul class="search-results" ng-if="ctrl.results">
-            <li class="search-result" ng-repeat="doc in ctrl.results">
+          <a name="results"></a>
+          <ul class="search-results" ng-show="$ctrl.results">
+            <li class="search-result" ng-repeat="doc in $ctrl.results">
               <div class="media-body">
                 <h4 class="search-result__title"><a href="{{doc.fields['field_url:url'][0]}}">{{doc.fields.title[0] | plaintext | trim}}</a></h4>
                 <ul class="search-result__meta">

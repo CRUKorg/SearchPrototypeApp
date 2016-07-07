@@ -1,7 +1,7 @@
-          <form role="search" name="searchForm" ng-submit="ctrl.searchSubmit()">
+          <form role="search" name="searchForm" ng-submit="$ctrl.searchSubmit();">
             <div class="cr-input-group cr-input-group--lg cr-search-input">
               <label for="search-input" id="search-label">Search...</label>
-              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="ctrl.search.input">
+              <input type="search" class="cr-input-group__input cr-search-input__input" id="search-input" placeholder="Search..." aria-describedby="search-label" autocomplete="off" autocorrect="off" ng-model="$ctrl.search.query">
               <span class="cr-input-group__button cr-search-input__button">
                 <button type="submit" class="btn" aria-label="Submit your search"><span class="cr-input-group__icon glyphicon glyphicon-search" aria-hidden="true"></span></button>
               </span>

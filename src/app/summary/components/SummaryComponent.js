@@ -2,16 +2,13 @@
   'use strict';
 
   app.component('searchSummary', {
-    scope: true,
     controller: 'SearchController',
-    controllerAs: 'ctrl',
-    bindToController: {
-      search: {
-        text: '<'
-      },
-      totalItems: '<'
+    bindings: {
+      text: '<',
+      totalItems: '<',
+      failedSearch: '<',
     },
-    templateUrl: 'summary/components/SummaryComponent.html'
+    templateUrl: 'summary/components/SummaryComponent.html',
   });
 
 }());

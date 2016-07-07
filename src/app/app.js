@@ -15,7 +15,10 @@
   /**
    * Define our routes.
    */
-  global.app.config(function($stateProvider, $urlRouterProvider) {
+  global.app.config(function($stateProvider, $urlRouterProvider, $analyticsProvider) {
+    /**
+     * Set the apps pages.
+     */
     $urlRouterProvider.otherwise('search');
 
     $stateProvider.state('search', {
@@ -34,6 +37,11 @@
       },
       templateUrl: 'search/controllers/search.html'
     });
+
+    /**
+     * Disable automatic analytics page views, we'll do this manually.
+     */
+    $analyticsProvider.virtualPageviews(false);
   });
 
 }(this));

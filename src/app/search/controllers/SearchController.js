@@ -27,30 +27,9 @@
        * @param {string} text The query to run against Elastic.
        */
       self.executeSearch = function(text) {
-console.log('do a search for ' + text, self.search);
-            /*var new_results = [];
-            var i = 0;
-            for (i = 0; i < self.resultsPerPage; i++) {
-              var i2 = (self.search.page * self.resultsPerPage) + i - 9;
-              var snippet = '';
-              var item = {
-                'fields': {
-                  'title': ['Result #' + i2],
-                  'field_url:url': ['http://www.cruk.org'],
-                  'field_type': ['News'],
-                  'field_published': [1467409896],
-                },
-                'highlight': {
-                  'body:value': ['Blah blah blah blah blah blah blah blah']
-                }
-              };
-              new_results.push(item);
-            }
-            self.results = new_results;
-            self.totalItems = 2311;
-
-            self.failedSearch = false;
-            self.updateState(self.search.text, self.search.page);*/
+        if (config.getSetting('debug', false)) {
+          $log.log('Do a search for ' + text, self.search);
+        }
 
         ElasticService.search({
           index: config.getSetting('index', ''),
@@ -80,14 +59,25 @@ console.log('do a search for ' + text, self.search);
             }
           }
         }).then(function (body) {
-          //self.search.page = 1;
           self.results = body.hits.hits;
           self.totalItems = body.hits.total;
-console.log(self.results);
+
+          if (config.getSetting('debug', false)) {
+            $log.log('The search request found ' + self.totalItems + 'results...', self.results);
+          }
+
           if (self.totalItems < 1) {
             self.noResults();
           }
           else {
+            /**
+             * Scroll to the top of the page.
+             */
+            $document.scrollTopAnimated(0);
+
+            /**
+             * Note that the search was successful.
+             */
             self.failedSearch = false;
           }
 
@@ -96,17 +86,6 @@ console.log(self.results);
         }, function (error) {
           $log.log('Ruh roh, sometihng went wrong when talking to Elastic... ' + $sanitize(error.message));
         });
-      };
-
-      /**
-       * Build an excerpt string for a search result.
-       *
-       * @param {object} fieldData An object containing field data from a search result.
-       * @param {object} highlightData An object containing highlight data from a search result.
-       * @return {string} An excerpt constructed of highlight data if available.
-       */
-      self.buildExcerpt = function(fieldData, highlightData) {
-
       };
 
       /**
@@ -150,29 +129,15 @@ console.log(self.results);
           }
 
           /**
-           * Scroll to the top of the page.
-           */
-          if ($stateParams.page !== page) {
-            $document.scrollTopAnimated(0);
-          }
-
-          /**
            * Update the application state/URL.
            */
-          //$state.go('.', {query: encoded_query, page: self.search.page}, {notify: true});
+          $state.go('.', {query: encoded_query, page: self.search.page}, {notify: false});
         }
       };
 
-      /**
-       * Execute a search if the default state says so.
-       */
-      if (self.search.text !== '') {
-        //self.executeSearch(self.search.text);
-      }
-
       $scope.$on('searchSubmitted', function(event, data){
         self.search.text = data.query;
-        self.search.page = 1;
+        //self.search.page = 1;
 
         self.executeSearch(self.search.text);
       });

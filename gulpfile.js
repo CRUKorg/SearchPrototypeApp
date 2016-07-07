@@ -6,8 +6,17 @@ var gulp = require('gulp'),
     pkg = require('./package.json');
 
 var project_name = pkg.name;
-var scss_paths = './src/assets/scss/**/*.scss';
-var js_paths = ['./src/app/*.js', './src/app/**/*.js', './src/app/**/**/*.js', '!./src/app/*.min.js', '!./src/app/**/*.min.js'];
+var scss_paths = [
+  './src/assets/scss/**/*.scss'
+];
+var js_paths = [
+  './src/app/*.js',
+  './src/app/search/controllers/SearchController.js',
+  './src/app/**/*.js',
+  './src/app/**/**/*.js',
+  '!./src/app/*.min.js',
+  '!./src/app/**/*.min.js'
+];
 var vendor_js_paths = [
   './bower_components/angular/angular.min.js',
   './bower_components/angular-ui-router/release/angular-ui-router.min.js',
@@ -22,7 +31,10 @@ var vendor_js_paths = [
   './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
   './bower_components/angular-scroll/angular-scroll.min.js'
 ];
-var template_paths = ['./src/app/**/*.html', './src/app/**/**/*.html'];
+var template_paths = [
+  './src/app/**/*.html',
+  './src/app/**/**/*.html'
+];
 
 /**
  * Task to rebuild CSS files.
@@ -36,7 +48,8 @@ gulp.task('build-css', function() {
       cascade: false
     }))
     .pipe(plugins.sass({
-      outputStyle: 'compressed'
+      outputStyle: 'compressed',
+      includePaths: ['bower_components/bootstrap-sass/assets/stylesheets']
     }).on('error', plugins.sass.logError))
     .pipe(plugins.sourcemaps.write('./maps', {
       addComment: false,
@@ -60,7 +73,7 @@ gulp.task('jshint', function() {
 gulp.task('build-js', function() {
   return gulp.src(js_paths)
     .pipe(plugins.concat(project_name + '.min.js'))
-    .pipe(plugins.uglify({mangle: false}))
+    //.pipe(plugins.uglify({mangle: false}))
     .pipe(gulp.dest('./src'));
 });
 

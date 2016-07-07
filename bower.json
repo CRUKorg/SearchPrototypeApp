@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "angular": "^1.5.5",
-    "cruk-pattern-library": "^0.0.3",
+    "cruk-pattern-library": "^0.0.4",
     "angular-mocks": "^1.5.5",
     "angulartics-google-analytics": "^0.1.4",
     "angular-ui-router": "^0.3.0",

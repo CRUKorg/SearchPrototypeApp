@@ -2,10 +2,8 @@
   'use strict';
 
   app.component('searchResults', {
-    scope: true,
     controller: 'SearchController',
-    controllerAs: 'ctrl',
-    bindToController: {
+    bindings: {
       results: '<',
       totalItems: '<'
     },
