@@ -20,6 +20,7 @@
       self.totalItems = 0;
       self.resultsPerPage = config.getSetting('resultsPerPage', 10);
       self.failedSearch = false;
+      self.loading = false;
 
       /**
        * Execute a search against Elastic.
@@ -27,9 +28,15 @@
        * @param {string} text The query to run against Elastic.
        */
       self.executeSearch = function(text) {
+        if (text.trim() === '') {
+          return;
+        }
+
         if (config.getSetting('debug', false)) {
           $log.log('Do a search for ' + text, self.search);
         }
+
+        self.loading = true;
 
         ElasticService.search({
           index: config.getSetting('index', ''),
@@ -61,6 +68,7 @@
         }).then(function (body) {
           self.results = body.hits.hits;
           self.totalItems = body.hits.total;
+          self.loading = false;
 
           if (config.getSetting('debug', false)) {
             $log.log('The search request found ' + self.totalItems + 'results...', self.results);
@@ -137,7 +145,9 @@
 
       $scope.$on('searchSubmitted', function(event, data){
         self.search.text = data.query;
-        //self.search.page = 1;
+        if ($stateParams.query !== encodeURI(self.search.text)) {
+          self.search.page = 1;
+        }
 
         self.executeSearch(self.search.text);
       });

@@ -5,7 +5,9 @@
     controller: 'SearchController',
     bindings: {
       results: '<',
-      totalItems: '<'
+      totalItems: '<',
+      loading: '<',
+      page: '<'
     },
     templateUrl: 'results/components/ResultsComponent.html'
   });

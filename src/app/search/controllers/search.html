@@ -12,7 +12,7 @@
 
           <search-summary text="ctrl.search.text" total-items="ctrl.totalItems" failed-search="ctrl.failedSearch"></search-summary>
 
-          <search-results results="ctrl.results" total-items="ctrl.totalItems"></search-results>
+          <search-results results="ctrl.results" total-items="ctrl.totalItems" loading="ctrl.loading" page="ctrl.search.page"></search-results>
 
           <uib-pager total-items="ctrl.totalItems" items-per-page="ctrl.resultsPerPage" ng-model="ctrl.search.page" ng-change="ctrl.setPage()" ng-if="ctrl.results.length > 0"></uib-pager>
 
