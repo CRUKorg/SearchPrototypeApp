@@ -102,6 +102,11 @@
        */
       self.noResults = function() {
         self.failedSearch = true;
+
+        if (config.getSetting('debug', false)) {
+          console.log('track no results');
+        }
+
         $analytics.eventTrack('searchNoResults', {category: 'News prototype search', label: 'No results'});
       };
 
@@ -113,6 +118,10 @@
          * Track page change event.
          */
         $analytics.eventTrack('searchPaged', {category: 'News prototype search ', label: 'Search paged'});
+
+        if (config.getSetting('debug', false)) {
+          console.log('track page change');
+        }
 
         /**
          * Execute the search of the next page.
@@ -129,14 +138,6 @@
 
         if ($stateParams.query !== encoded_query || $stateParams.page !== page) {
           /**
-           * Push events to analytics (GA).
-           */
-          if ($stateParams.query !== encoded_query) {
-            $analytics.pageTrack('/search?query=' + encoded_query);
-            $analytics.eventTrack('search', {category: 'News prototype search ', label: 'Search'});
-          }
-
-          /**
            * Update the application state/URL.
            */
           $state.go('.', {query: encoded_query, page: self.search.page}, {notify: false});
@@ -145,8 +146,17 @@
 
       $scope.$on('searchSubmitted', function(event, data){
         self.search.text = data.query;
-        if ($stateParams.query !== encodeURI(self.search.text)) {
+        var encoded_query = encodeURI(data.query);
+
+        if ($stateParams.query !== encoded_query) {
           self.search.page = 1;
+        }
+
+        $analytics.pageTrack('/search?query=' + encoded_query);
+        $analytics.eventTrack('search', {category: 'News prototype search ', label: 'Search'});
+
+        if (config.getSetting('debug', false)) {
+          console.log('track a search');
         }
 
         self.executeSearch(self.search.text);
