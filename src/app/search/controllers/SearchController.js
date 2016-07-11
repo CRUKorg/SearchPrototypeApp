@@ -46,7 +46,7 @@
             query: {
               multi_match: {
                 type: 'phrase',
-                fields: ['title', 'body:value'],
+                fields: ['title^1.5', 'body:value'],
                 query: text,
                 analyzer: 'news'
                 //fuzziness: 'AUTO'
@@ -57,10 +57,9 @@
               pre_tags: ['[mark]'],
               post_tags: ['[/mark]'],
               //encoder: 'html',
-              fragment_size: 80,
               number_of_fragments: 3,
+              fragment_size: 80,
               fields: {
-                title: {},
                 'body:value': {}
               }
             }
@@ -92,7 +91,7 @@
           // Update the page state.
           self.updateState(self.search.text, self.search.page);
         }, function (error) {
-          $log.log('Ruh roh, sometihng went wrong when talking to Elastic... ' + $sanitize(error.message));
+          $log.log('Ruh roh, something went wrong when talking to Elastic... "' + $sanitize(error.message) + '".');
         });
       };
 
@@ -144,7 +143,7 @@
         }
       };
 
-      $scope.$on('searchSubmitted', function(event, data){
+      $scope.$on('searchSubmitted', function(event, data) {
         self.search.text = data.query;
         var encoded_query = encodeURI(data.query);
 

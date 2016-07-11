@@ -21,7 +21,7 @@ var vendor_js_paths = [
   './bower_components/angular/angular.min.js',
   './bower_components/angular-ui-router/release/angular-ui-router.min.js',
   './bower_components/angulartics/dist/angulartics.min.js',
-  './bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
+  './bower_components/angulartics/dist/angulartics-gtm.min.js',
   './bower_components/jquery/dist/jquery.min.js',
   './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js',
   './bower_components/elastic.js/dist/elastic.min.js',
@@ -73,7 +73,7 @@ gulp.task('jshint', function() {
 gulp.task('build-js', function() {
   return gulp.src(js_paths)
     .pipe(plugins.concat(project_name + '.min.js'))
-    //.pipe(plugins.uglify({mangle: false}))
+    .pipe(plugins.uglify({mangle: false}))
     .pipe(gulp.dest('./src'));
 });
 

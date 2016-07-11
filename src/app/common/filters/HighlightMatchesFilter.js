@@ -2,7 +2,8 @@
   'use strict';
 
   /**
-   * Returns a string which has any HTML tags removed.
+   * Returns a string where [mark]'s are replaced with their HTML element
+   * counterpart. Also remove any occurances of "/>" which seems to crop up.
    *
    * http://stackoverflow.com/questions/822452/strip-html-from-text-javascript
    *
@@ -15,7 +16,7 @@
       if (!angular.isString(string)) {
         return string;
       }
-      return string.split('[mark]').join('<mark>').split('[/mark]').join('</mark>');
+      return string.split('[mark]').join('<mark>').split('[/mark]').join('</mark>').split('/>').join('');
     };
   });
 

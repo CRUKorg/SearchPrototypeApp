@@ -9,7 +9,7 @@
     'ui.bootstrap',
     'duScroll',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.tagmanager'
   ]);
 
   /**
