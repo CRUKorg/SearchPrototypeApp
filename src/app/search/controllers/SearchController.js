@@ -159,7 +159,24 @@
         }
 
         self.executeSearch(self.search.text);
+
+        /**
+         * Remove focus from the input.
+         */
+        if (document.activeElement != document.body) {
+          document.activeElement.blur();
+        }
       });
+
+      $scope.$on('$viewContentLoaded', function(event) {
+        $(document).on('focus', '.cr-input-group__input', function(){
+          $(this).parent().addClass('cr-input-group--focused');
+        });
+        $(document).on('blur', '.cr-input-group__input', function(){
+          $(this).parent().removeClass('cr-input-group--focused');
+        });
+      });
+
     }]);
 
 }());
