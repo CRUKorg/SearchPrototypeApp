@@ -147,10 +147,16 @@
         self.search.text = data.query;
         var encoded_query = encodeURI(data.query);
 
+        /**
+         * If this is a new search, set the page to be 1.
+         */
         if ($stateParams.query !== encoded_query) {
           self.search.page = 1;
         }
 
+        /**
+         * Track the page view and search event.
+         */
         $analytics.pageTrack('/search?query=' + encoded_query);
         $analytics.eventTrack('search', {category: 'News prototype search ', label: 'Search'});
 
@@ -158,6 +164,9 @@
           console.log('track a search');
         }
 
+        /**
+         * Execute the search.
+         */
         self.executeSearch(self.search.text);
 
         /**
