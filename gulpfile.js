@@ -29,7 +29,9 @@ var vendor_js_paths = [
   //'./bower_components/elasticui/dist/elasticui.min.js',
   './bower_components/angular-sanitize/angular-sanitize.min.js',
   './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-  './bower_components/angular-scroll/angular-scroll.min.js'
+  './bower_components/angular-scroll/angular-scroll.min.js',
+  './bower_components/raven-js/dist/raven.min.js',
+  './bower_components/raven-js/dist/plugins/angular.min.js'
 ];
 var template_paths = [
   './src/app/**/*.html',

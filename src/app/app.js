@@ -44,4 +44,9 @@
     $analyticsProvider.virtualPageviews(false);
   });
 
+  Raven
+    .config('https://897353ebedab448a9798b131b79f4244@app.getsentry.com/86680')
+    .addPlugin(Raven.Plugins.Angular)
+    .install();
+
 }(this));

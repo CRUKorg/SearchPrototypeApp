@@ -19,7 +19,6 @@
                   <li><strong>Published:</strong> {{doc.fields.field_published[0] | dateos:'dS MMMM yyyy'}}</li>
                 </ul>
                 <p class="search-result__excerpt">
-                {{doc.highlight['body:value'].length}}
                   <span ng-if="doc.highlight['body:value']" ng-bind-html="doc.highlight['body:value'].join('... ') | plaintext | highlightmatches"></span>
                   <span ng-if="doc.highlight['body:value'] === undefined"><span ng-bind-html="doc.fields['body:value'].join('... ') | plaintext | limitTo:160 | trim"></span>...</span>
                 </p>
