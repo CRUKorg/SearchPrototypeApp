@@ -7,15 +7,13 @@
     'ngSanitize',
     'elasticsearch',
     'ui.bootstrap',
-    'duScroll',
-    'angulartics',
-    'angulartics.google.tagmanager'
+    'duScroll'
   ]);
 
   /**
    * Define our routes.
    */
-  global.app.config(function($stateProvider, $urlRouterProvider, $analyticsProvider) {
+  global.app.config(function($stateProvider, $urlRouterProvider) {
     /**
      * Set the apps pages.
      */
@@ -37,11 +35,6 @@
       },
       templateUrl: 'search/controllers/search.html'
     });
-
-    /**
-     * Disable automatic analytics page views, we'll do this manually.
-     */
-    $analyticsProvider.virtualPageviews(false);
   });
 
   Raven

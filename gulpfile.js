@@ -20,13 +20,10 @@ var js_paths = [
 var vendor_js_paths = [
   './bower_components/angular/angular.min.js',
   './bower_components/angular-ui-router/release/angular-ui-router.min.js',
-  './bower_components/angulartics/dist/angulartics.min.js',
-  './bower_components/angulartics/dist/angulartics-gtm.min.js',
   './bower_components/jquery/dist/jquery.min.js',
   './bower_components/cruk-pattern-library/assets/js/cruk-base.min.js',
   './bower_components/elastic.js/dist/elastic.min.js',
   './bower_components/elasticsearch/elasticsearch.angular.js',
-  //'./bower_components/elasticui/dist/elasticui.min.js',
   './bower_components/angular-sanitize/angular-sanitize.min.js',
   './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
   './bower_components/angular-scroll/angular-scroll.min.js',

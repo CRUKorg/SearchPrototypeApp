@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  app.controller('SearchController', ['$scope', 'configurationService', 'ElasticService', 'esFactory', '$sanitize', '$state', '$stateParams', '$document', '$log', '$analytics',
-    function($scope, config, ElasticService, esFactory, $sanitize, $state, $stateParams, $document, $log, $analytics) {
+  app.controller('SearchController', ['$scope', 'configurationService', 'ElasticService', 'esFactory', '$sanitize', '$state', '$stateParams', '$document', '$log', 'GTMTracking',
+    function($scope, config, ElasticService, esFactory, $sanitize, $state, $stateParams, $document, $log, gtmTracking) {
       var self = this;
 
       /**
@@ -69,10 +69,16 @@
           self.totalItems = body.hits.total;
           self.loading = false;
 
+          /**
+           * Log things if in debug mode.
+           */
           if (config.getSetting('debug', false)) {
             $log.log('The search request found ' + self.totalItems + 'results...', self.results);
           }
 
+          /**
+           * Trigger reactions to results.
+           */
           if (self.totalItems < 1) {
             self.noResults();
           }
@@ -88,7 +94,14 @@
             self.failedSearch = false;
           }
 
-          // Update the page state.
+          /**
+           * Send any queued GTM events.
+           */
+           gtmTracking.sendEvents(self.search.text, self.search.page, self.totalItems);
+
+          /**
+           * Update the page state.
+           */
           self.updateState(self.search.text, self.search.page);
         }, function (error) {
           $log.log('Ruh roh, something went wrong when talking to Elastic... "' + $sanitize(error.message) + '".');
@@ -96,8 +109,8 @@
       };
 
       /**
-       * Output a message stating no results have been found. At this point
-       * trigger any specific GA reporting.
+       * Output a message stating no results have been found. GTM/GA tracking
+       * is taken care of within the GTM provider.
        */
       self.noResults = function() {
         self.failedSearch = true;
@@ -105,8 +118,6 @@
         if (config.getSetting('debug', false)) {
           console.log('track no results');
         }
-
-        $analytics.eventTrack('searchNoResults', {category: 'News prototype search', label: 'No results'});
       };
 
       /**
@@ -116,7 +127,7 @@
         /**
          * Track page change event.
          */
-        $analytics.eventTrack('searchPaged', {category: 'News prototype search ', label: 'Search paged'});
+        gtmTracking.trackEvent('searchPaged');
 
         if (config.getSetting('debug', false)) {
           console.log('track page change');
@@ -157,8 +168,7 @@
         /**
          * Track the page view and search event.
          */
-        $analytics.pageTrack('/search?query=' + encoded_query);
-        $analytics.eventTrack('search', {category: 'News prototype search ', label: 'Search'});
+        gtmTracking.trackEvent('search');
 
         if (config.getSetting('debug', false)) {
           console.log('track a search');
