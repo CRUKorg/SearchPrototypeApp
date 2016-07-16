@@ -40,15 +40,15 @@
 
         var push_object = {
           'event': 'site search event',
-          'content-name': '/search?query=' + query + '&cat=' + gtmSearchTitle,
+          'content-name': '/search?query=' + query + '&cat=' + gtmSearchTitle + '&page=' + page,
           'keyword': query,
           'target': gtmSearchTitle,
           'value': totalResults,
-          'searchFiltered': eventEntry === 'searchFiltered',
-          'searchSorted': eventEntry === 'searchSorted',
-          'searchPaged': eventEntry === 'searchPaged',
-          'searchNoResults': totalResults < 1,
-          'searchGeo': searchGeo,
+          'searchFiltered': eventEntry === 'searchFiltered' ? 'true' : 'false',
+          'searchSorted': eventEntry === 'searchSorted' ? 'true' : 'false',
+          'searchPaged': eventEntry === 'searchPaged' ? 'true' : 'false',
+          'searchNoResults': totalResults < 1 ? 'true' : 'false',
+          'searchGeo': searchGeo  ? 'true' : 'false',
           'pageNumber': page
         };
 
