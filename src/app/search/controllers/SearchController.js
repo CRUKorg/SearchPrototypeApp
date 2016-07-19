@@ -9,7 +9,7 @@
        * Setup variables.
        */
       self.search = {
-        text: decodeURI($stateParams.query) || '',
+        text: $stateParams.query || '',
         page: parseInt($stateParams.page) || 1
       };
 
@@ -143,25 +143,21 @@
        * Update state.
        */
       self.updateState = function(text, page) {
-        var decoded_query = decodeURI(self.search.text);
-        var encoded_query = encodeURI(text);
-
-        if ($stateParams.query !== encoded_query || $stateParams.page !== page) {
+        if ($stateParams.query !== text || $stateParams.page !== page) {
           /**
            * Update the application state/URL.
            */
-          $state.go('.', {query: encoded_query, page: self.search.page}, {notify: false});
+          $state.go('.', {query: text, page: self.search.page}, {notify: false});
         }
       };
 
       $scope.$on('searchSubmitted', function(event, data) {
         self.search.text = data.query;
-        var encoded_query = encodeURI(data.query);
 
         /**
          * If this is a new search, set the page to be 1.
          */
-        if ($stateParams.query !== encoded_query) {
+        if ($stateParams.query !== self.search.text) {
           self.search.page = 1;
         }
 
