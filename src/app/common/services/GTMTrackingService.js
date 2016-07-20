@@ -34,9 +34,9 @@
         var eventEntry = self.queuedEvents[i];
 
         var gtmSearchTitle = self.searchName;
-        if (totalResults < 1) {
+        /*if (totalResults < 1) {
           gtmSearchTitle += ' - Failed';
-        }
+        }*/
 
         var push_object = {
           'event': 'site search event',
