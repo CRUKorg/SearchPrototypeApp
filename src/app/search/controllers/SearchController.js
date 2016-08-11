@@ -48,8 +48,8 @@
                 type: 'phrase',
                 fields: ['title^1.5', 'body:value'],
                 query: text,
-                analyzer: 'news'
-                //fuzziness: 'AUTO'
+                analyzer: 'news',
+                fuzziness: 'AUTO'
               }
             },
             fields: ['title', 'field_published', 'field_type', 'body:value', 'field_url:url'],

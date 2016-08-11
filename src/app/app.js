@@ -38,7 +38,7 @@
   });
 
   Raven
-    .config('https://897353ebedab448a9798b131b79f4244@app.getsentry.com/86680')
+    .config('http://edbe61a04bb14f8ba76d2437f55df69f@ec2-52-48-134-162.eu-west-1.compute.amazonaws.com:8080/2')
     .addPlugin(Raven.Plugins.Angular)
     .install();
 
