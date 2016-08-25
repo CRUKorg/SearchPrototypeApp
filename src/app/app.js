@@ -38,7 +38,7 @@
   });
 
   Raven
-    .config('http://edbe61a04bb14f8ba76d2437f55df69f@ec2-52-48-134-162.eu-west-1.compute.amazonaws.com:8080/2')
+    .config('https://58f9fc4e7bf844fbbfcdad8916fdc24d@sentrylog.cancerresearchuk.org/5')
     .addPlugin(Raven.Plugins.Angular)
     .install();
 
